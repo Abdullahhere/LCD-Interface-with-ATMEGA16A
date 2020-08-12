@@ -1,0 +1,178 @@
+.ORG 0x00
+.EQU LCD_DPRT = PORTA   ;LCD DATA PORT
+.EQU LCD_DDDR = DDRA    ;LCD DATA DDR
+.EQU LCD_DPIN = PINA    ;LCD DATA PIN
+.EQU LCD_CPRT = PORTB   ;LCD COMMANDS PORT
+.EQU LCD_CDDR = DDRB    ;LCD COMMANDS DDR
+.EQU LCD_CPIN = PINB    ;LCD COMMANDS PIN
+.EQU LCD_RS = 0         ;LCD RS
+.EQU LCD_RW = 1         ;LCD RW
+.EQU LCD_EN = 2         ;LCD EN
+
+LDI R21 , HIGH(RAMEND)
+OUT SPH , R21
+LDI R21 , LOW(RAMEND)
+OUT SPL , R21
+
+LDI R21 , 0xFF
+OUT LCD_DDDR , R21      ;LCD Data Port is Output
+OUT LCD_CDDR , R21      ;LCD Command Port is Output
+CBI LCD_CPRT , LCD_EN   ;LCD_EN = 0
+CALL DELAY_2ms          ;Wait for Power ON
+LDI R16 , 0x38          ;init LCD 2 Lines, 5x7 Matrix
+CALL CMNDWRT            ;Call Command Function
+CALL DELAY_2ms          ;Wait 2 ms
+LDI R16 , 0x0E          ;Display ON , Cursor ON
+CALL CMNDWRT            ;Call Command Function
+LDI R16 , 0x01          ;Clear LCD
+CALL CMNDWRT            ;Call Command Function
+CALL DELAY_2ms          ;Wait 2 ms
+LDI R16 , 0x06          ;Shift Cursor Right
+CALL CMNDWRT             ;Call Command Function
+LDI R16 , 'N'           ;Display Letter 'N'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'A'           ;Display Letter 'A'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'M'           ;Display Letter 'M'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'E'           ;Display Letter 'E'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '('           ;Display Letter '('
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'C'           ;Display Letter 'C'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'M'           ;Display Letter 'M'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'S'           ;Display Letter 'S'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '-'           ;Display Letter '-'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'I'           ;Display Letter 'I'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'D'           ;Display Letter 'D'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , ')'           ;Display Letter ')'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 0xC0          ;Force Cursor to the Begining of the 2nd Line
+CALL CMNDWRT            ;Call Command Function
+LDI R16 , 'A'           ;Display Letter 'A'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'B'           ;Display Letter 'B'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'D'           ;Display Letter 'D'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'U'           ;Display Letter 'U'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'L'           ;Display Letter 'L'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'L'           ;Display Letter 'L'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'A'           ;Display Letter 'A'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'H'           ;Display Letter 'H'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '('           ;Display Letter '('
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '2'           ;Display Letter '2'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '6'           ;Display Letter '6'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '2'           ;Display Letter '2'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '5'           ;Display Letter '5'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '1'           ;Display Letter '1'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '3'           ;Display Letter '3'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , ')'           ;Display Letter ')'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , ','           ;Display Letter ','
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'M'           ;Display Letter 'M'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'A'           ;Display Letter 'A'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'H'           ;Display Letter 'H'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'A'           ;Display Letter 'A'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , 'D'           ;Display Letter 'D'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '('           ;Display Letter '('
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '2'           ;Display Letter '2'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '4'           ;Display Letter '4'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '3'           ;Display Letter '3'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '3'           ;Display Letter '3'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '7'           ;Display Letter '7'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , '5'           ;Display Letter '5'
+CALL DATAWRT            ;Call Data Write Function
+LDI R16 , ')'           ;Display Letter '3'
+CALL DATAWRT            ;Call Data Write Function
+
+HERE:  
+CALL DELAY_500ms        ;Wait 500ms
+LDI R16 , 0x18          ;Shift Entire Display to the Left
+CALL CMNDWRT            ;Call Command Function
+JMP HERE                ;Stay Here
+
+CMNDWRT:
+OUT LCD_DPRT , R16      ;LCD Data Port = R16
+CBI LCD_CPRT , LCD_RS   ;RS = 0 for Command
+CBI LCD_CPRT , LCD_RW   ;RW = 0 for Write
+SBI LCD_CPRT , LCD_EN   ;EN = 1
+CALL SDELAY             ;Make a Wide EN Pulse
+CBI LCD_CPRT , LCD_EN   ;EN = 0 for H-L Pulse
+CALL DELAY_100us        ;Wait 100us
+RET
+
+DATAWRT:
+OUT LCD_DPRT , R16      ;LCD Data Port = R16
+SBI LCD_CPRT , LCD_RS   ;RS = 1 for Data
+CBI LCD_CPRT , LCD_RW   ;RW = 0 for Write
+SBI LCD_CPRT , LCD_EN   ;EN = 1
+CALL SDELAY             ;Make a Wide EN Pulse
+CBI LCD_CPRT , LCD_EN   ;EN = 0 for H-L Pulse
+CALL DELAY_100us        ;Wait 100us
+RET
+
+SDELAY:
+NOP
+NOP
+RET
+
+DELAY_100us:
+PUSH R17
+LDI R17 , 60
+DR0:
+CALL SDELAY
+DEC R17
+BRNE DR0
+POP R17
+RET
+
+DELAY_2ms:
+PUSH R17
+LDI R17 , 20
+LDR0:
+CALL DELAY_100us
+DEC R17
+BRNE LDR0
+POP R17
+RET
+
+DELAY_500ms:
+PUSH R17
+LDI R17 , 250
+BDR0:
+CALL DELAY_100us
+DEC R17
+BRNE BDR0
+POP R17
+RET
